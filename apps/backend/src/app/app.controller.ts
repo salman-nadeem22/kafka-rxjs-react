@@ -11,7 +11,7 @@ export class AppController {
   }
 
   @Post()
-  createOrder(@Body() data: { productName: string }) {
-    return this.appService.createOrder(data.productName);
+  createOrder(@Body() data: { name: string }) {
+    return this.appService.createOrder(data.name);
   }
 }

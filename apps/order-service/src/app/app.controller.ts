@@ -3,6 +3,8 @@ import {
   Client,
   ClientKafka,
   EventPattern,
+  MessagePattern,
+  Payload,
   Transport,
 } from '@nestjs/microservices';
 import { AppService } from './app.service';
@@ -17,10 +19,8 @@ export class AppController implements OnModuleInit {
       client: {
         clientId: 'order',
         brokers: ['localhost:9092'],
-        retry: {
-          retries: 5,
-        },
-      }, consumer: {
+      },
+      consumer: {
         groupId: 'order-consumer',
       },
     },
@@ -35,10 +35,11 @@ export class AppController implements OnModuleInit {
     });
   }
 
-  @EventPattern('PROCESS_ORDER')
-  processOrder() {
+  @MessagePattern('PROCESS_ORDER')
+  processOrder(@Payload() payload) {
     console.log('Processing Order');
     console.log('Order Processing Complete');
+    return payload.value;
     // return this.appService.getData();
   }
 }

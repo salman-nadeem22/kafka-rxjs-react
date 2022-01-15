@@ -12,9 +12,6 @@ async function bootstrap() {
       client: {
         clientId: 'order',
         brokers: ['localhost:9092'],
-        retry: {
-          retries: 5,
-        },
       },
       consumer: {
         groupId: 'order-consumer',

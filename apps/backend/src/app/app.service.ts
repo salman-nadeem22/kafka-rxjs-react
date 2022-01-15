@@ -1,9 +1,17 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { ClientKafka } from '@nestjs/microservices';
+import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
+import { Client, ClientKafka, Transport } from '@nestjs/microservices';
 
 @Injectable()
-export class AppService {
+export class AppService implements OnModuleInit {
   constructor(@Inject('ORDER_SERVICE') private orderClient: ClientKafka) {}
+
+  async onModuleInit() {
+    const requestPatterns = ['PROCESS_ORDER'];
+    requestPatterns.forEach((pattern) => {
+      this.orderClient.subscribeToResponseOf(pattern);
+    });
+    await this.orderClient.connect();
+  }
 
   getAllOrders() {
     return [
@@ -12,8 +20,10 @@ export class AppService {
     ];
   }
 
-  async createOrder(productName: string) {
-    this.orderClient.emit('PROCESS_ORDER', { productName })
-    return 'OK';
+  createOrder(productName: string) {
+    return this.orderClient.send(
+      'PROCESS_ORDER',
+      JSON.stringify({ productName })
+    );
   }
 }
