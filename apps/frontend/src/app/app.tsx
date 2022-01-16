@@ -1,16 +1,20 @@
-import styles from './app.module.scss';
-import NxWelcome from './nx-welcome';
-
+import { useDispatch } from 'react-redux';
 import { Route, Link } from 'react-router-dom';
+import { actions } from '../store/actions';
 
 export function App() {
+  const dispatch = useDispatch();
   return (
     <>
-      <NxWelcome title="frontend" />
       <div />
-      <br />
-      <hr />
-      <br />
+      <button onClick={() => dispatch(actions.getAllOrderStart())}>
+        Get all orders
+      </button>
+      <button
+        onClick={() => dispatch(actions.createOrderStart({ name: 'test' }))}
+      >
+        create order
+      </button>
       <div role="navigation">
         <ul>
           <li>
