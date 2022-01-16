@@ -10,7 +10,8 @@
         "outputPath": "dist/apps/backend",
         "main": "apps/backend/src/main.ts",
         "tsConfig": "apps/backend/tsconfig.app.json",
-        "assets": ["apps/backend/src/assets"]
+        "assets": ["apps/backend/src/assets"],
+        "generatePackageJson": true
       },
       "configurations": {
         "production": {
@@ -45,6 +46,16 @@
       "options": {
         "jestConfig": "apps/backend/jest.config.js",
         "passWithNoTests": true
+      }
+    },
+    "docker": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": [
+          "yarn nx build backend",
+          "DOCKER_BUILDKIT=1 docker build --build-arg app_name=backend --target backend -t krx-backend ."
+        ],
+        "parallel": false
       }
     }
   },

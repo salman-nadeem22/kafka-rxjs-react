@@ -1,0 +1,30 @@
+version: '3.3'
+services:
+  krx-frontend:
+    image: krx-frontend
+    restart: always
+    container_name: krx-frontend
+    ports:
+      - '4000:80'
+    networks:
+      - krx-net
+  
+  krx-backend:
+    image: krx-backend
+    restart: always
+    container_name: krx-backend
+    ports:
+      - '4001:3333'
+    networks:
+      - krx-net
+  
+  krx-order-service:
+    image: krx-order-service
+    restart: always
+    container_name: krx-order-service
+    networks:
+      - krx-net
+  
+networks:
+  krx-net:
+    driver: bridge

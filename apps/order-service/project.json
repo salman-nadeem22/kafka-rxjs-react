@@ -10,7 +10,8 @@
         "outputPath": "dist/apps/order-service",
         "main": "apps/order-service/src/main.ts",
         "tsConfig": "apps/order-service/tsconfig.app.json",
-        "assets": ["apps/order-service/src/assets"]
+        "assets": ["apps/order-service/src/assets"],
+        "generatePackageJson": true
       },
       "configurations": {
         "production": {
@@ -37,6 +38,16 @@
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": ["apps/order-service/**/*.ts"]
+      }
+    },
+    "docker": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": [
+          "yarn nx build order-service",
+          "DOCKER_BUILDKIT=1 docker build --build-arg app_name=order-service --target backend -t krx-order-service ."
+        ],
+        "parallel": false
       }
     }
   },

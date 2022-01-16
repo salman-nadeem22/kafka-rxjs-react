@@ -56,6 +56,16 @@
       "options": {
         "lintFilePatterns": ["apps/frontend/**/*.{ts,tsx,js,jsx}"]
       }
+    },
+    "docker": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": [
+          "yarn nx build frontend",
+          "DOCKER_BUILDKIT=1 docker build --build-arg app_name=frontend --target frontend -t krx-frontend ."
+        ],
+        "parallel": false
+      }
     }
   },
   "tags": []
